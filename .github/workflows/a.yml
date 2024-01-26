@@ -21,7 +21,7 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Install dependencies
-      run: apt-get install jq curl
+      run: sudo apt-get install jq curl
 
     - name: Run script
       run: |
