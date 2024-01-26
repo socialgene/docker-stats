@@ -1,0 +1,39 @@
+name: Run Script
+
+on:
+  # run every 6 hours
+  schedule:
+    - cron: "0 0 * * *"
+  # run when manually triggered
+  workflow_dispatch:
+  # run when this file is changed
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/a.yml"  # change to be the path to this file
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+
+    - name: Install dependencies
+      run: apt-get install jq curl
+
+    - name: Run script
+      run: |
+        echo -e "$(date -u +"%Y-%m-%dT%H:%M:%SZ")\t$(curl -s https://hub.docker.com/v2/repositories/chasemc2/sgnf-sgpy | jq -r ".pull_count")" >> sgnf-sgpy.csv
+        echo -e "$(date -u +"%Y-%m-%dT%H:%M:%SZ")\t$(curl -s https://hub.docker.com/v2/repositories/chasemc2/sgnf-hmmer | jq -r ".pull_count")" >> sgnf-hmmer.csv
+        echo -e "$(date -u +"%Y-%m-%dT%H:%M:%SZ")\t$(curl -s https://hub.docker.com/v2/repositories/chasemc2/sgnf-hmmer_plus | jq -r ".pull_count")" >> sgnf-hmmer_plus.csv
+        echo -e "$(date -u +"%Y-%m-%dT%H:%M:%SZ")\t$(curl -s https://hub.docker.com/v2/repositories/chasemc2/sgnf-antismash | jq -r ".pull_count")" >> sgnf-antismash.csv
+        echo -e "$(date -u +"%Y-%m-%dT%H:%M:%SZ")\t$(curl -s https://hub.docker.com/v2/repositories/chasemc2/sgnf-minimal | jq -r ".pull_count")" >> sgnf-minimal.csv
+    - name: Commit files
+      run: |
+        git config user.name github-actions
+        git config user.email github-actions@github.com
+        git add .
+        git commit -m "generated"
+        git push
