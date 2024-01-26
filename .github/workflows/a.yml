@@ -25,11 +25,11 @@ jobs:
 
     - name: Run script
       run: |
-        echo -e "$(date -u +"%Y-%m-%dT%H:%M:%SZ")\t$(curl -s https://hub.docker.com/v2/repositories/chasemc2/sgnf-sgpy | jq -r ".pull_count")" >> sgnf-sgpy.csv
-        echo -e "$(date -u +"%Y-%m-%dT%H:%M:%SZ")\t$(curl -s https://hub.docker.com/v2/repositories/chasemc2/sgnf-hmmer | jq -r ".pull_count")" >> sgnf-hmmer.csv
-        echo -e "$(date -u +"%Y-%m-%dT%H:%M:%SZ")\t$(curl -s https://hub.docker.com/v2/repositories/chasemc2/sgnf-hmmer_plus | jq -r ".pull_count")" >> sgnf-hmmer_plus.csv
-        echo -e "$(date -u +"%Y-%m-%dT%H:%M:%SZ")\t$(curl -s https://hub.docker.com/v2/repositories/chasemc2/sgnf-antismash | jq -r ".pull_count")" >> sgnf-antismash.csv
-        echo -e "$(date -u +"%Y-%m-%dT%H:%M:%SZ")\t$(curl -s https://hub.docker.com/v2/repositories/chasemc2/sgnf-minimal | jq -r ".pull_count")" >> sgnf-minimal.csv
+        echo -e "$(date -u +"%Y-%m-%dT%H:%M:%SZ")$(curl -s https://hub.docker.com/v2/repositories/chasemc2/sgnf-sgpy | jq -r ".pull_count")" >> sgnf-sgpy.csv
+        echo -e "$(date -u +"%Y-%m-%dT%H:%M:%SZ")$(curl -s https://hub.docker.com/v2/repositories/chasemc2/sgnf-hmmer | jq -r ".pull_count")" >> sgnf-hmmer.csv
+        echo -e "$(date -u +"%Y-%m-%dT%H:%M:%SZ")$(curl -s https://hub.docker.com/v2/repositories/chasemc2/sgnf-hmmer_plus | jq -r ".pull_count")" >> sgnf-hmmer_plus.csv
+        echo -e "$(date -u +"%Y-%m-%dT%H:%M:%SZ")$(curl -s https://hub.docker.com/v2/repositories/chasemc2/sgnf-antismash | jq -r ".pull_count")" >> sgnf-antismash.csv
+        echo -e "$(date -u +"%Y-%m-%dT%H:%M:%SZ")$(curl -s https://hub.docker.com/v2/repositories/chasemc2/sgnf-minimal | jq -r ".pull_count")" >> sgnf-minimal.csv
     - name: Commit files
       run: |
         git config user.name github-actions
