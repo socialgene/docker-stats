@@ -21,7 +21,10 @@ jobs:
       uses: actions/checkout@v4
 
     - name: Install dependencies
-      run: sudo apt-get install jq curl
+      run: sudo apt-get install jq curl python3-pip
+
+    - name: Install Python packages
+      run: pip install pandas matplotlib
 
     - name: Run script
       run: |
@@ -30,6 +33,35 @@ jobs:
         echo -e "$(date -u +"%Y-%m-%dT%H:%M:%SZ")\t$(curl -s https://hub.docker.com/v2/repositories/chasemc2/sgnf-hmmer_plus | jq -r ".pull_count")" >> sgnf-hmmer_plus.tsv
         echo -e "$(date -u +"%Y-%m-%dT%H:%M:%SZ")\t$(curl -s https://hub.docker.com/v2/repositories/chasemc2/sgnf-antismash | jq -r ".pull_count")" >> sgnf-antismash.tsv
         echo -e "$(date -u +"%Y-%m-%dT%H:%M:%SZ")\t$(curl -s https://hub.docker.com/v2/repositories/chasemc2/sgnf-minimal | jq -r ".pull_count")" >> sgnf-minimal.tsv
+
+    - name: Generate plots
+      run: |
+        python3 <<EOF
+        import pandas as pd
+        import matplotlib.pyplot as plt
+
+        files = ['sgnf-sgpy.tsv', 'sgnf-hmmer.tsv', 'sgnf-hmmer_plus.tsv', 'sgnf-antismash.tsv', 'sgnf-minimal.tsv']
+        for file in files:
+            data = pd.read_csv(file, sep='\t', header=None, names=['timestamp', 'pull_count'])
+            data['timestamp'] = pd.to_datetime(data['timestamp'])
+            plt.figure()
+            plt.plot(data['timestamp'], data['pull_count'], marker='o')
+            plt.title(file.replace('.tsv', '').replace('-', ' ').title())
+            plt.xlabel('Time')
+            plt.ylabel('Pull Count')
+            plt.xticks(rotation=45)
+            plt.tight_layout()
+            plt.savefig(file.replace('.tsv', '.png'))
+        EOF
+
+    - name: Update README
+      run: |
+        echo -e "## Pull Count Plots\n" > README.md
+        for file in sgnf-*.png; do
+          echo -e "### $(basename $file .png | sed 's/-/ /g' | sed 's/\b\(.\)/\u\1/g')\n" >> README.md
+          echo -e "![Plot](./$file)\n" >> README.md
+        done
+
     - name: Commit files
       run: |
         git config user.name github-actions
