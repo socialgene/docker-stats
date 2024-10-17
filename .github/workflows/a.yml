@@ -30,7 +30,7 @@ jobs:
       run: |
         echo -e "$(date -u +"%Y-%m-%dT%H:%M:%SZ")\t$(curl -s https://hub.docker.com/v2/repositories/chasemc2/sgnf-sgpy | jq -r ".pull_count")" >> sgnf-sgpy.tsv
         echo -e "$(date -u +"%Y-%m-%dT%H:%M:%SZ")\t$(curl -s https://hub.docker.com/v2/repositories/chasemc2/sgnf-hmmer | jq -r ".pull_count")" >> sgnf-hmmer.tsv
-        echo -e "$(date -u +"%Y-%m-%dT%H:%M:%SZ")\t$(curl -s https://hub.docker.com/v2/repositories/chasemc2/sgnf-hmmer_plus | jq -r ".pull_count")" >> sgnf-hmmer_plus.tsv
+        echo -e "$(date -u +"%Y-%m-%dT%H:%M:%SZ")\t$(curl -s https://hub.docker.com/v2/repositories/chasemc2/sgnf-hmmer-plus | jq -r ".pull_count")" >> sgnf-hmmer_plus.tsv
         echo -e "$(date -u +"%Y-%m-%dT%H:%M:%SZ")\t$(curl -s https://hub.docker.com/v2/repositories/chasemc2/sgnf-antismash | jq -r ".pull_count")" >> sgnf-antismash.tsv
         echo -e "$(date -u +"%Y-%m-%dT%H:%M:%SZ")\t$(curl -s https://hub.docker.com/v2/repositories/chasemc2/sgnf-minimal | jq -r ".pull_count")" >> sgnf-minimal.tsv
 
